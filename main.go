@@ -28,7 +28,7 @@ const (
 	_shutdownHardPeriod = 2 * time.Second
 )
 
-var supportedLanguages = []string{"en"}
+var supportedLanguages = []string{"en", "ru"}
 
 func main() {
 	// Parse the command line before anything reads a flag-backed value. The locale

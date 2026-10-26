@@ -1,15 +1,17 @@
 hello: |-
-    Hello, %s!
+    Hi, %s! 🍄 I'm Telegnome, a little gnome who keeps spam out of Telegram groups. Add me to your group and make me an admin, and I'll start guarding it.
 
 something_went_wrong: |-
-    Something went wrong, please try again later or contact our support team.
+    Oops, I tripped over a mushroom 🍄 Something went wrong, please try again in a moment.
 
 terms_and_conditions:
+    button: |-
+        Read the terms
     request: |-
-        Please review our terms and conditions and accept them to start using our services.
+        Before we start, please read my terms of use and accept them if you agree. The short version: I'm free, and you use me at your own risk.
     changed: |-
-        Our terms and conditions have been amended. Please review and accept them to continue using our services.
+        My terms of use have changed. Please read the new version and accept it to keep using me.
     accepted: |-
-        Thank you for accepting our terms and conditions.
+        Thank you! 🌱 You're all set.
     failed_to_accept: |-
-        Failed to accept terms and conditions, please try again.
+        I couldn't save your acceptance. Please try again.

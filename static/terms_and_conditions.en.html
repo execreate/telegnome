@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="176"/>
     <meta name="HandheldFriendly" content="True"/>
     <meta name="robots" content="noindex,nofollow"/>
-    <title>Terms and Conditions</title>
+    <title>Telegnome Terms of Use</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -40,22 +40,69 @@
         .accept-btn:hover {
             background-color: #45a049;
         }
+
+        .updated {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .summary {
+            font-weight: bold;
+        }
+
+        h3 {
+            margin-bottom: 4px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="terms">
-        <h2>Terms and Conditions</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in ante eu velit pellentesque consectetur.
-            Suspendisse volutpat magna ut tellus elementum efficitur. Mauris vel gravida mauris, vel laoreet justo.</p>
-        <p>Nullam in augue eget tortor vulputate lobortis id ac nisi. Aenean condimentum scelerisque ex, nec finibus
-            urna pretium nec. Morbi hendrerit pharetra est, vel commodo lorem efficitur id.</p>
-        <p>Quisque vulputate purus a lorem auctor, ac commodo nisl iaculis. Morbi aliquam mauris turpis, ac faucibus ex
-            convallis vitae. Sed a auctor massa. Suspendisse ultricies mauris non felis egestas iaculis.</p>
+        <h2>Telegnome Terms of Use</h2>
+        <p class="updated">Last updated: 26 October 2026</p>
+        <p class="summary">The short version: Telegnome is free, and you use it at your own risk.</p>
+        <p>Telegnome is a free bot that helps Telegram group administrators keep spam out of their groups. By pressing
+            “Accept the terms” below you agree to these terms. If you don't agree, please don't use Telegnome.</p>
+
+        <h3>1. Free, provided “as is”</h3>
+        <p>Telegnome is provided free of charge, “as is” and “as available”, without warranties of any kind, express or
+            implied, including fitness for a particular purpose, accuracy, or uninterrupted availability. We may change,
+            suspend or stop the bot at any time without notice.</p>
+
+        <h3>2. You use Telegnome at your own risk</h3>
+        <p>Spam detection is automated and imperfect. Telegnome may miss spam, and it may delete legitimate messages or
+            restrict or remove members who did nothing wrong. You use Telegnome entirely at your own risk.</p>
+
+        <h3>3. Limitation of liability</h3>
+        <p>To the maximum extent permitted by law, the people who develop and operate Telegnome are not liable for any
+            direct, indirect, incidental or consequential damage or loss arising from using Telegnome or being unable to
+            use it, including lost messages or data, removed members, harm to your community or reputation, or lost
+            income.</p>
+
+        <h3>4. Group administrators</h3>
+        <p>If you add Telegnome to a group, you are responsible for giving it the admin rights it needs, configuring it,
+            reviewing its actions, and letting your members know the group is moderated by a bot. You can remove it from
+            the group at any time.</p>
+
+        <h3>5. Your data</h3>
+        <p>To work, Telegnome processes data that Telegram sends it: your Telegram ID, name, username and language, and
+            the messages in groups it moderates. We keep only what we need to run the bot and fight spam, and we never
+            sell your data.</p>
+
+        <h3>6. Not affiliated with Telegram</h3>
+        <p>Telegnome is an independent project. It is not affiliated with or endorsed by Telegram.</p>
+
+        <h3>7. Fair use</h3>
+        <p>Don't try to abuse, overload or break Telegnome, or use it to harm others. We may block access for anyone who
+            does.</p>
+
+        <h3>8. Changes to these terms</h3>
+        <p>We may update these terms. When we do, Telegnome will ask you to accept the new version before you continue
+            using it.</p>
     </div>
 
-    <button class="accept-btn" onclick="acceptTerms()">Accept Terms and Conditions</button>
+    <button class="accept-btn" onclick="acceptTerms()">Accept the terms</button>
 </div>
 
 <script>
@@ -71,11 +118,11 @@
             return;
         }
 
-        Telegram.WebApp.showConfirm("Are you sure you want to accept terms and conditions?", function (accepted) {
+        Telegram.WebApp.showConfirm("Do you accept the Telegnome terms of use?", function (accepted) {
             if (accepted) {
                 fetch("/accept_terms?" + Telegram.WebApp.initData).then(function (response) {
                     if (response.status !== 200) {
-                        throw new Error("Error " + response.status + ": " + response.text())
+                        throw new Error("Could not save your acceptance, please try again (" + response.status + ")")
                     }
                 }).then(function () {
                     Telegram.WebApp.close()

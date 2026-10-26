@@ -131,6 +131,7 @@ func termsTexts(t *testing.T) *viper.Viper {
 
 	dir := t.TempDir()
 	content := `terms_and_conditions:
+    button: Read the terms
     request: Please accept the terms.
     changed: The terms have changed, please accept them again.
     accepted: Thank you for accepting.
@@ -228,6 +229,9 @@ func TestTermsAndConditionsHandleUpdate(t *testing.T) {
 				t.Fatalf("reply markup = %+v, want a single button", markup.InlineKeyboard)
 			}
 			button := markup.InlineKeyboard[0][0]
+			if button.Text != "Read the terms" {
+				t.Errorf("button text = %q, want the localized label", button.Text)
+			}
 			if button.WebApp == nil {
 				t.Fatal("the button has no WebApp payload")
 			}

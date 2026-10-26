@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="MobileOptimized" content="176"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="robots" content="noindex,nofollow"/>
+    <title>Условия использования Telegnome</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .terms {
+            margin-bottom: 20px;
+        }
+
+        .accept-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .accept-btn:hover {
+            background-color: #45a049;
+        }
+
+        .updated {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .summary {
+            font-weight: bold;
+        }
+
+        h3 {
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="terms">
+        <h2>Условия использования Telegnome</h2>
+        <p class="updated">Последнее обновление: 26 октября 2026 г.</p>
+        <p class="summary">Если коротко: Telegnome бесплатный, и вы пользуетесь им на свой страх и риск.</p>
+        <p>Telegnome — бесплатный бот, который помогает администраторам групп в Telegram защищать их от спама. Нажимая
+            «Принять условия» ниже, вы соглашаетесь с этими условиями. Если вы не согласны, пожалуйста, не пользуйтесь Telegnome.</p>
+
+        <h3>1. Бесплатно и «как есть»</h3>
+        <p>Telegnome предоставляется бесплатно, на условиях «как есть» и «по мере доступности», без каких-либо гарантий,
+            явных или подразумеваемых, в том числе гарантий пригодности для определённой цели, точности работы или
+            бесперебойной доступности. Мы можем изменить, приостановить или прекратить работу бота в любое время без
+            предупреждения.</p>
+
+        <h3>2. Вы пользуетесь Telegnome на свой страх и риск</h3>
+        <p>Спам распознаётся автоматически, и это распознавание не бывает безошибочным. Telegnome может пропустить спам,
+            а может удалить обычные сообщения или ограничить либо исключить участников, которые ничего не нарушили. Вы
+            пользуетесь Telegnome полностью на свой страх и риск.</p>
+
+        <h3>3. Ограничение ответственности</h3>
+        <p>В максимальной степени, допустимой законом, разработчики и операторы Telegnome не несут ответственности за
+            любой прямой, косвенный, случайный или последующий ущерб или убытки, возникшие в результате использования
+            Telegnome или невозможности его использовать, включая потерю сообщений или данных, исключение участников,
+            вред вашему сообществу или репутации, а также упущенную выгоду.</p>
+
+        <h3>4. Администраторы групп</h3>
+        <p>Добавляя Telegnome в группу, вы отвечаете за то, чтобы выдать ему необходимые права администратора, настроить
+            его, проверять его действия и сообщить участникам, что группу модерирует бот. Вы можете удалить бота из группы
+            в любой момент.</p>
+
+        <h3>5. Ваши данные</h3>
+        <p>Для работы Telegnome обрабатывает данные, которые ему передаёт Telegram: ваш Telegram ID, имя, имя
+            пользователя (username) и язык, а также сообщения в группах, которые он модерирует. Мы храним только то, что
+            нужно для работы бота и борьбы со спамом, и никогда не продаём ваши данные.</p>
+
+        <h3>6. Не связан с Telegram</h3>
+        <p>Telegnome — независимый проект. Он не связан с Telegram и не одобрен им.</p>
+
+        <h3>7. Честное использование</h3>
+        <p>Не пытайтесь злоупотреблять Telegnome, перегружать или взламывать его, а также использовать его во вред
+            другим. Мы можем закрыть доступ к боту любому, кто это делает.</p>
+
+        <h3>8. Изменение условий</h3>
+        <p>Мы можем обновлять эти условия. В этом случае Telegnome попросит вас принять новую версию, прежде чем вы
+            продолжите им пользоваться.</p>
+    </div>
+
+    <button class="accept-btn" onclick="acceptTerms()">Принять условия</button>
+</div>
+
+<script>
+    Telegram.WebApp.ready()
+
+    let btn = document.querySelector(".accept-btn")
+    if (Telegram.WebApp.initData.length < 10) {
+        btn.hidden = true;
+    }
+
+    function acceptTerms() {
+        if (Telegram.WebApp.initData.length < 10) {
+            return;
+        }
+
+        Telegram.WebApp.showConfirm("Вы принимаете условия использования Telegnome?", function (accepted) {
+            if (accepted) {
+                fetch("/accept_terms?" + Telegram.WebApp.initData).then(function (response) {
+                    if (response.status !== 200) {
+                        throw new Error("Не удалось сохранить согласие, попробуйте ещё раз (" + response.status + ")")
+                    }
+                }).then(function () {
+                    Telegram.WebApp.close()
+                }).catch(function (err) {
+                    Telegram.WebApp.showAlert(err.message);
+                    Telegram.WebApp.close()
+                });
+            } else {
+                Telegram.WebApp.close()
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

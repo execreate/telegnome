@@ -1,0 +1,19 @@
+default:
+    start: Запустить бота
+
+all_private_chats:
+    start: Запустить бота
+
+all_group_chats:
+    start: Запустить бота
+
+all_chat_administrators:
+    start: Запустить бота
+
+bot_admin:
+    start: Запустить бота
+    my_id: Узнать ID чата и пользователя
+
+bot_owner:
+    start: Запустить бота
+    my_id: Узнать ID чата и пользователя

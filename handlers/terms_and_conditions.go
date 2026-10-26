@@ -101,7 +101,7 @@ func (handler *TermsAndConditionsHandler) HandleUpdate(b *gotgbot.Bot, ctx *ext.
 			InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 				{
 					{
-						Text: "Terms and Conditions",
+						Text: texts.GetString("terms_and_conditions.button"),
 						WebApp: &gotgbot.WebAppInfo{
 							Url: pageURL,
 						},

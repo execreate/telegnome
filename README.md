@@ -44,8 +44,8 @@ main.go                  Entry point: wires everything together, manages lifecyc
 ├── database/
 │   ├── migrations/      Goose SQL migrations (PostgreSQL)
 │   └── tables/          DB table models
-├── locale/              en.yaml, en_commands.yaml (add more locales here)
-└── static/              Static assets served by the WebApp server
+├── locale/              Texts and command descriptions: en.yaml, ru.yaml, *_commands.yaml
+└── static/              Static assets served by the WebApp server (T&C pages per language)
 ```
 
 **Handler execution order** (by group priority):
@@ -280,6 +280,9 @@ language:
 2. Add a `static/terms_and_conditions.<lang>.html` page.
 3. Add the language to `supportedLanguages` in `main.go`.
 4. Point `--locale-path` at the folder if it isn't the default `./locale`.
+
+`locale/shipped_locales_test.go` fails if any language is missing a key that English has (or has an extra one), or if
+it has no T&C page, so `go test ./...` catches a half-translated change.
 
 The locale is picked per user from Telegram's `language_code` — `MiscContextHandler` loads the matching texts into
 `ctx.Data["texts"]`, and the WebApp server does the same from the validated initData. A missing locale file falls back
