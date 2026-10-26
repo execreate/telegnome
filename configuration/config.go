@@ -1,0 +1,143 @@
+package configuration
+
+import (
+	"fmt"
+	"os"
+	"strings"
+
+	"github.com/execreate/go-telegram-bot-template/internals/logger"
+	"github.com/spf13/viper"
+	"go.uber.org/zap"
+)
+
+// Configuration keeps bot configuration settings
+type Configuration struct {
+	*viper.Viper
+}
+
+// Configure loads the configuration from config.yaml and the MY_BOT_* environment
+// variables, and verifies that every required variable resolves to a non-empty value.
+func Configure(requiredConfigVariables []string) (*Configuration, error) {
+	// configure viper
+	config := &Configuration{viper.New()}
+	config.SetEnvPrefix("my_bot")  // will be upper-cased automatically
+	config.AutomaticEnv()          // automatically read in environment variables that match
+	config.AddConfigPath(".")      // optionally look for config in the working directory
+	config.SetConfigName("config") // name of config file (without extension)
+	config.SetConfigType("yaml")   // REQUIRED if the config file does not have the extension in the name
+	err := config.ReadInConfig()   // Find and read the config file
+	if err != nil {                // Handle errors reading the config file
+		logger.Log.Info(
+			"error reading the configuration file fallback to env variables",
+			zap.Error(err),
+		)
+	}
+	config.SetDefault("webhook_listen_addr", "0.0.0.0")
+	config.SetDefault("webhook_port", 8080)
+	config.SetDefault("webapp_port", 8081)
+	config.SetDefault("terms_and_conditions_version", "v1.0.0")
+
+	if err := checkRequiredConfigVariables(config, requiredConfigVariables); err != nil {
+		return nil, err
+	}
+
+	return config, nil
+}
+
+func checkRequiredConfigVariables(config *Configuration, requiredConfigVariables []string) error {
+	for _, variableName := range requiredConfigVariables {
+		// Check the config variable is set.
+		if config.GetString(variableName) == "" {
+			return fmt.Errorf("required configuration variable %q is empty", variableName)
+		}
+	}
+	return nil
+}
+
+// GetToken returns bots secret token
+func (config *Configuration) GetToken() string {
+	return config.GetString("token")
+}
+
+// GetTermsAndConditionsVersion returns bots secret token
+func (config *Configuration) GetTermsAndConditionsVersion() string {
+	return config.GetString("terms_and_conditions_version")
+}
+
+// GetWebhookDomain returns the webhook domain without the trailing slash
+func (config *Configuration) GetWebhookDomain() string {
+	webhookDomainWithoutTrailingSlash, _ := strings.CutSuffix(config.GetString("webhook_domain"), "/")
+	return webhookDomainWithoutTrailingSlash
+}
+
+// GetWebhookPath returns the webhook path
+func (config *Configuration) GetWebhookPath() string {
+	webhookPath := config.GetToken() + "/webhook"
+	return webhookPath
+}
+
+// GetWebhookListenAddr returns the interface the webhook server binds to. It defaults
+// to 0.0.0.0 so the published port is reachable from outside a container; set it to
+// 127.0.0.1 when a reverse proxy on the same host is the only client.
+func (config *Configuration) GetWebhookListenAddr() string {
+	return config.GetString("webhook_listen_addr")
+}
+
+// GetWebhookPort returns the webhook port
+func (config *Configuration) GetWebhookPort() int {
+	return config.GetInt("webhook_port")
+}
+
+// GetWebAppDomain returns the WebApp domain without the trailing slash
+func (config *Configuration) GetWebAppDomain() string {
+	webAppDomainWithoutTrailingSlash, _ := strings.CutSuffix(config.GetString("webapp_domain"), "/")
+	return webAppDomainWithoutTrailingSlash
+}
+
+// GetWebAppPort returns the webhook port
+func (config *Configuration) GetWebAppPort() int {
+	return config.GetInt("webapp_port")
+}
+
+// GetWebhookSecret returns webhook secret
+func (config *Configuration) GetWebhookSecret() string {
+	return config.GetString("webhook_secret")
+}
+
+// GetStaticContentPath returns path to the static content without the trailing path separator
+func (config *Configuration) GetStaticContentPath() string {
+	pathWithoutTrailingSlash, _ := strings.CutSuffix(config.GetString("static_content_path"), string(os.PathSeparator))
+	return pathWithoutTrailingSlash
+}
+
+// GetDbDSN returns the database connection string
+func (config *Configuration) GetDbDSN() string {
+	return config.GetString("db_dsn")
+}
+
+// GetRedisAddr returns the database connection string
+func (config *Configuration) GetRedisAddr() string {
+	return config.GetString("redis_addr")
+}
+
+// GetRedisUsername returns the database connection string
+func (config *Configuration) GetRedisUsername() string {
+	return config.GetString("redis_user")
+}
+
+// GetRedisPassword returns the database connection string
+func (config *Configuration) GetRedisPassword() string {
+	return config.GetString("redis_pass")
+}
+
+// GetRedisUseSSL returns true if the Redis connection should use TLS. Set via the
+// "redis_use_ssl" config key or the MY_BOT_REDIS_USE_SSL environment variable.
+func (config *Configuration) GetRedisUseSSL() bool {
+	return config.GetBool("redis_use_ssl")
+}
+
+// GetDebug returns true if the app is running in debug mode. Set via the "debug"
+// config key or the MY_BOT_DEBUG environment variable.
+func (config *Configuration) GetDebug() bool {
+	return config.GetBool("debug")
+}

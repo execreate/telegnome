@@ -1,0 +1,57 @@
+package handlers
+
+import (
+	"fmt"
+
+	"github.com/PaulSonOfLars/gotgbot/v2"
+	"github.com/PaulSonOfLars/gotgbot/v2/ext"
+	"github.com/execreate/go-telegram-bot-template/handlers/helpers"
+	"github.com/execreate/go-telegram-bot-template/internals/logger"
+	"go.uber.org/zap"
+)
+
+// MyID replies to a command by sending user and chat ID information.
+func MyID(b *gotgbot.Bot, ctx *ext.Context) error {
+	var userID, chatID, linkedChatID int64
+	var chatType, chatTitle string
+
+	if ctx.EffectiveUser != nil {
+		userID = ctx.EffectiveUser.Id
+	}
+	if ctx.EffectiveChat != nil {
+		if chat, err := b.GetChat(ctx.EffectiveChat.Id, nil); err == nil {
+			chatID = chat.Id
+			chatType = chat.Type
+			chatTitle = chat.Title
+			linkedChatID = chat.LinkedChatId
+		} else {
+			logger.Log.Warn(
+				"failed to get chat info",
+				zap.Error(err),
+			)
+			chatID = ctx.EffectiveChat.Id
+			chatType = ctx.EffectiveChat.Type
+			chatTitle = ctx.EffectiveChat.Title
+		}
+	}
+
+	// The title is user-controlled, so it has to be escaped or Telegram rejects the
+	// whole MarkdownV2 message with a 400.
+	txt := fmt.Sprintf(
+		"User ID: `%d`\n\nChat Title: %s\nChat ID: `%d`\nChat Type: `%s`\n\nLinked Chat ID: `%d`",
+		userID,
+		helpers.EscapeMarkdownChars(chatTitle),
+		chatID,
+		chatType,
+		linkedChatID,
+	)
+
+	_, err := ctx.EffectiveMessage.Reply(
+		b,
+		txt,
+		&gotgbot.SendMessageOpts{
+			ParseMode: gotgbot.ParseModeMarkdownV2,
+		},
+	)
+	return err
+}
