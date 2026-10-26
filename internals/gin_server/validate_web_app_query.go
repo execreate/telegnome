@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
-	"github.com/execreate/go-telegram-bot-template/internals/logger"
-	"github.com/execreate/go-telegram-bot-template/locale"
+	"github.com/execreate/telegnome/internals/logger"
+	"github.com/execreate/telegnome/locale"
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
 	"github.com/spf13/viper"

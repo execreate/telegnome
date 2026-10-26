@@ -51,7 +51,7 @@ func TestGetRedisUseSSL(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			t.Setenv("MY_BOT_REDIS_USE_SSL", tt.value)
+			t.Setenv("TELEGNOME_REDIS_USE_SSL", tt.value)
 
 			config, err := Configure(nil)
 			if err != nil {
@@ -59,7 +59,7 @@ func TestGetRedisUseSSL(t *testing.T) {
 			}
 
 			if got := config.GetRedisUseSSL(); got != tt.want {
-				t.Errorf("GetRedisUseSSL() with MY_BOT_REDIS_USE_SSL=%q = %v, want %v", tt.value, got, tt.want)
+				t.Errorf("GetRedisUseSSL() with TELEGNOME_REDIS_USE_SSL=%q = %v, want %v", tt.value, got, tt.want)
 			}
 		})
 	}
@@ -81,7 +81,7 @@ func TestConfigureRequiredVariables(t *testing.T) {
 	})
 
 	t.Run("the first missing variable is reported", func(t *testing.T) {
-		t.Setenv("MY_BOT_TOKEN", "123:ABC")
+		t.Setenv("TELEGNOME_TOKEN", "123:ABC")
 
 		_, err := Configure([]string{"token", "db_dsn"})
 
@@ -101,10 +101,10 @@ func TestConfigureRequiredVariables(t *testing.T) {
 }
 
 func TestEnvOverridesAndTrimming(t *testing.T) {
-	t.Setenv("MY_BOT_WEBHOOK_LISTEN_ADDR", "127.0.0.1")
-	t.Setenv("MY_BOT_WEBHOOK_DOMAIN", "https://bot.example.com/")
-	t.Setenv("MY_BOT_WEBAPP_DOMAIN", "https://app.example.com/")
-	t.Setenv("MY_BOT_TOKEN", "123:ABC")
+	t.Setenv("TELEGNOME_WEBHOOK_LISTEN_ADDR", "127.0.0.1")
+	t.Setenv("TELEGNOME_WEBHOOK_DOMAIN", "https://bot.example.com/")
+	t.Setenv("TELEGNOME_WEBAPP_DOMAIN", "https://app.example.com/")
+	t.Setenv("TELEGNOME_TOKEN", "123:ABC")
 
 	config, err := Configure([]string{"token"})
 	if err != nil {
@@ -128,9 +128,9 @@ func TestEnvOverridesAndTrimming(t *testing.T) {
 func TestTrailingSeparatorTrimming(t *testing.T) {
 	staticWithSlash := "/srv/static" + string(os.PathSeparator)
 
-	t.Setenv("MY_BOT_WEBHOOK_DOMAIN", "https://bot.example.com/")
-	t.Setenv("MY_BOT_WEBAPP_DOMAIN", "https://app.example.com/")
-	t.Setenv("MY_BOT_STATIC_CONTENT_PATH", staticWithSlash)
+	t.Setenv("TELEGNOME_WEBHOOK_DOMAIN", "https://bot.example.com/")
+	t.Setenv("TELEGNOME_WEBAPP_DOMAIN", "https://app.example.com/")
+	t.Setenv("TELEGNOME_STATIC_CONTENT_PATH", staticWithSlash)
 
 	config, err := Configure(nil)
 	if err != nil {
@@ -151,9 +151,9 @@ func TestTrailingSeparatorTrimming(t *testing.T) {
 }
 
 func TestTrimmingLeavesValuesWithoutATrailingSeparatorAlone(t *testing.T) {
-	t.Setenv("MY_BOT_WEBHOOK_DOMAIN", "https://bot.example.com")
-	t.Setenv("MY_BOT_WEBAPP_DOMAIN", "https://app.example.com")
-	t.Setenv("MY_BOT_STATIC_CONTENT_PATH", "./static")
+	t.Setenv("TELEGNOME_WEBHOOK_DOMAIN", "https://bot.example.com")
+	t.Setenv("TELEGNOME_WEBAPP_DOMAIN", "https://app.example.com")
+	t.Setenv("TELEGNOME_STATIC_CONTENT_PATH", "./static")
 
 	config, err := Configure(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func TestTrimmingLeavesValuesWithoutATrailingSeparatorAlone(t *testing.T) {
 	}
 
 	// Only one trailing separator is removed; the getters use CutSuffix, not a trim.
-	t.Setenv("MY_BOT_WEBHOOK_DOMAIN", "https://bot.example.com//")
+	t.Setenv("TELEGNOME_WEBHOOK_DOMAIN", "https://bot.example.com//")
 	config, err = Configure(nil)
 	if err != nil {
 		t.Fatalf("Configure() unexpected error: %v", err)
@@ -182,13 +182,13 @@ func TestTrimmingLeavesValuesWithoutATrailingSeparatorAlone(t *testing.T) {
 }
 
 func TestPassthroughGetters(t *testing.T) {
-	t.Setenv("MY_BOT_TOKEN", "123:ABC")
-	t.Setenv("MY_BOT_WEBHOOK_SECRET", "s3cret")
-	t.Setenv("MY_BOT_DB_DSN", "postgresql://user:pass@localhost:5432/my_db")
-	t.Setenv("MY_BOT_REDIS_ADDR", "localhost:6375")
-	t.Setenv("MY_BOT_REDIS_USER", "default")
-	t.Setenv("MY_BOT_REDIS_PASS", "password")
-	t.Setenv("MY_BOT_TERMS_AND_CONDITIONS_VERSION", "v9.9.9")
+	t.Setenv("TELEGNOME_TOKEN", "123:ABC")
+	t.Setenv("TELEGNOME_WEBHOOK_SECRET", "s3cret")
+	t.Setenv("TELEGNOME_DB_DSN", "postgresql://user:pass@localhost:5432/telegnome")
+	t.Setenv("TELEGNOME_REDIS_ADDR", "localhost:6375")
+	t.Setenv("TELEGNOME_REDIS_USER", "default")
+	t.Setenv("TELEGNOME_REDIS_PASS", "password")
+	t.Setenv("TELEGNOME_TERMS_AND_CONDITIONS_VERSION", "v9.9.9")
 
 	config, err := Configure(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func TestPassthroughGetters(t *testing.T) {
 	}{
 		{"GetToken", config.GetToken(), "123:ABC"},
 		{"GetWebhookSecret", config.GetWebhookSecret(), "s3cret"},
-		{"GetDbDSN", config.GetDbDSN(), "postgresql://user:pass@localhost:5432/my_db"},
+		{"GetDbDSN", config.GetDbDSN(), "postgresql://user:pass@localhost:5432/telegnome"},
 		{"GetRedisAddr", config.GetRedisAddr(), "localhost:6375"},
 		{"GetRedisUsername", config.GetRedisUsername(), "default"},
 		{"GetRedisPassword", config.GetRedisPassword(), "password"},

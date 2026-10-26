@@ -4,7 +4,7 @@ import (
 	"flag"
 	"sync"
 
-	"github.com/execreate/go-telegram-bot-template/internals/logger"
+	"github.com/execreate/telegnome/internals/logger"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"

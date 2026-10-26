@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
-	"github.com/execreate/go-telegram-bot-template/database/tables"
-	"github.com/execreate/go-telegram-bot-template/locale"
+	"github.com/execreate/telegnome/database/tables"
+	"github.com/execreate/telegnome/locale"
 )
 
 var errUserCommandsNotFound = errors.New("commands for this user not found")

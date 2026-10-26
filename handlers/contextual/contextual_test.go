@@ -10,9 +10,9 @@ import (
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
-	"github.com/execreate/go-telegram-bot-template/database/tables"
-	"github.com/execreate/go-telegram-bot-template/internals/users_cache"
-	"github.com/execreate/go-telegram-bot-template/locale"
+	"github.com/execreate/telegnome/database/tables"
+	"github.com/execreate/telegnome/internals/users_cache"
+	"github.com/execreate/telegnome/locale"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/spf13/viper"

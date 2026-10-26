@@ -19,8 +19,8 @@ import (
 	"time"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
-	"github.com/execreate/go-telegram-bot-template/database/tables"
-	"github.com/execreate/go-telegram-bot-template/internals/users_cache/user_container"
+	"github.com/execreate/telegnome/database/tables"
+	"github.com/execreate/telegnome/internals/users_cache/user_container"
 	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/pressly/goose/v3"
@@ -45,7 +45,7 @@ func TestMain(m *testing.M) {
 	container, err := postgres.Run(
 		ctx,
 		"postgres:17-alpine",
-		postgres.WithDatabase("my_db"),
+		postgres.WithDatabase("telegnome"),
 		postgres.WithUsername("user"),
 		postgres.WithPassword("pass"),
 		testcontainers.WithWaitStrategy(

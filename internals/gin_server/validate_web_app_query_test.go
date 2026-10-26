@@ -15,7 +15,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/execreate/go-telegram-bot-template/locale"
+	"github.com/execreate/telegnome/locale"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )

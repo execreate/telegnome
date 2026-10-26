@@ -12,9 +12,9 @@ import (
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
-	"github.com/execreate/go-telegram-bot-template/database/tables"
-	"github.com/execreate/go-telegram-bot-template/internals/gin_server"
-	"github.com/execreate/go-telegram-bot-template/locale"
+	"github.com/execreate/telegnome/database/tables"
+	"github.com/execreate/telegnome/internals/gin_server"
+	"github.com/execreate/telegnome/locale"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )

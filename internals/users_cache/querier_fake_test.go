@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/execreate/go-telegram-bot-template/database/tables"
+	"github.com/execreate/telegnome/database/tables"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 )

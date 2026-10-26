@@ -1,10 +1,14 @@
-# Go Telegram Bot Template
+# Telegnome 🍄
 
-A production-ready template for building Telegram bots in Go. Built on top
-of [gotgbot](https://github.com/PaulSonOfLars/gotgbot), it includes everything you need to ship a reliable, scalable bot
-out of the box.
+A friendly little gnome that guards your Telegram groups from spam. Add Telegnome to a group, give it admin rights, and
+it keeps spammers and their junk out of the garden so your members don't have to.
 
-## Features
+Pilot languages: English and Russian.
+
+> **Status:** early pilot. The bot plumbing below is in place; the anti-spam features are being built. Telegnome is
+> written in Go on top of [gotgbot](https://github.com/PaulSonOfLars/gotgbot).
+
+## Platform Features
 
 - **Webhook-based updates** — no long polling; secure via secret token validation
 - **Telegram WebApp support** — built-in Gin server; initData HMAC validation plus a 12-hour `auth_date` replay window
@@ -26,7 +30,7 @@ out of the box.
 
 ```
 main.go                  Entry point: wires everything together, manages lifecycle
-├── configuration/       Viper-based config (file + MY_BOT_* env vars)
+├── configuration/       Viper-based config (file + TELEGNOME_* env vars)
 ├── internals/
 │   ├── bot/             Bot init, webhook server, DB pool, settings management
 │   ├── commands/        Bot command definitions
@@ -65,7 +69,12 @@ main.go                  Entry point: wires everything together, manages lifecyc
 
 ### 1. Create your bot
 
-Talk to [@BotFather](https://t.me/BotFather) and create a new bot. Save the token you receive.
+Talk to [@BotFather](https://t.me/BotFather) and create a new bot. Save the token you receive. Each developer should use
+their own test bot; only production runs as the real Telegnome.
+
+Telegnome needs to see every message in a group. A bot that is a group admin receives all messages anyway, but disable
+privacy mode in BotFather (`/setprivacy`) too, so it also works before it is promoted. Privacy changes only apply to
+groups the bot joins afterwards, so remove and re-add it to existing test groups.
 
 ### 2. Set up ngrok (local development)
 
@@ -90,7 +99,7 @@ This starts PostgreSQL 17 on port 5432 and Redis 7 on port 6375.
 ```shell
 go install github.com/pressly/goose/v3/cmd/goose@latest
 goose -dir ./database/migrations/postgres postgres \
-  "user=user password=pass dbname=my_db host=localhost port=5432 sslmode=disable" up
+  "user=user password=pass dbname=telegnome host=localhost port=5432 sslmode=disable" up
 ```
 
 ### 5. Configure the bot
@@ -106,30 +115,30 @@ cp config.dist.yaml config.yaml
 go run .
 ```
 
-Send `/start` to your bot. If it replies, you're good to go.
+Send `/start` to your bot. If it replies, you're good to go. Then add it to a test group and promote it to admin.
 
 ## Configuration
 
-Configuration is loaded from `config.yaml` and can be overridden by environment variables with the `MY_BOT_` prefix (
-uppercased automatically). Environment variables take precedence over the config file.
+Configuration is loaded from `config.yaml` and can be overridden by environment variables with the `TELEGNOME_` prefix
+(uppercased automatically). Environment variables take precedence over the config file.
 
-| Config key                     | Env variable                          | Required | Description                                             |
-|--------------------------------|---------------------------------------|----------|---------------------------------------------------------|
-| `token`                        | `MY_BOT_TOKEN`                        | yes      | Telegram Bot API token                                  |
-| `webhook_domain`               | `MY_BOT_WEBHOOK_DOMAIN`               | yes      | Public HTTPS domain for the webhook                     |
-| `webhook_listen_addr`          | `MY_BOT_WEBHOOK_LISTEN_ADDR`          | no       | Interface the webhook server binds to (default: `0.0.0.0`) |
-| `webhook_port`                 | `MY_BOT_WEBHOOK_PORT`                 | yes      | Port to listen on (default: `8080`)                     |
-| `webhook_secret`               | `MY_BOT_WEBHOOK_SECRET`               | yes      | Secret for validating webhook requests                  |
-| `webapp_domain`                | `MY_BOT_WEBAPP_DOMAIN`                | yes      | Public HTTPS domain for the WebApp                      |
-| `webapp_port`                  | `MY_BOT_WEBAPP_PORT`                  | yes      | Port for the WebApp server (default: `8081`)            |
-| `static_content_path`          | `MY_BOT_STATIC_CONTENT_PATH`          | yes      | Path to static assets directory                         |
-| `db_dsn`                       | `MY_BOT_DB_DSN`                       | yes      | PostgreSQL connection string                            |
-| `redis_addr`                   | `MY_BOT_REDIS_ADDR`                   | yes      | Redis address (e.g. `localhost:6375`)                   |
-| `redis_user`                   | `MY_BOT_REDIS_USER`                   | yes      | Redis username                                          |
-| `redis_pass`                   | `MY_BOT_REDIS_PASS`                   | yes      | Redis password                                          |
-| `redis_use_ssl`                | `MY_BOT_REDIS_USE_SSL`                | no       | `true` connects to Redis over TLS 1.2+ (default: `false`) |
-| `terms_and_conditions_version` | `MY_BOT_TERMS_AND_CONDITIONS_VERSION` | no       | Version users must accept (default: `v1.0.0`)           |
-| `debug`                        | `MY_BOT_DEBUG`                        | no       | `true` for a verbose console logger; JSON logs otherwise |
+| Config key                     | Env variable                             | Required | Description                                                |
+|--------------------------------|------------------------------------------|----------|------------------------------------------------------------|
+| `token`                        | `TELEGNOME_TOKEN`                        | yes      | Telegram Bot API token                                     |
+| `webhook_domain`               | `TELEGNOME_WEBHOOK_DOMAIN`               | yes      | Public HTTPS domain for the webhook                        |
+| `webhook_listen_addr`          | `TELEGNOME_WEBHOOK_LISTEN_ADDR`          | no       | Interface the webhook server binds to (default: `0.0.0.0`) |
+| `webhook_port`                 | `TELEGNOME_WEBHOOK_PORT`                 | yes      | Port to listen on (default: `8080`)                        |
+| `webhook_secret`               | `TELEGNOME_WEBHOOK_SECRET`               | yes      | Secret for validating webhook requests                     |
+| `webapp_domain`                | `TELEGNOME_WEBAPP_DOMAIN`                | yes      | Public HTTPS domain for the WebApp                         |
+| `webapp_port`                  | `TELEGNOME_WEBAPP_PORT`                  | yes      | Port for the WebApp server (default: `8081`)               |
+| `static_content_path`          | `TELEGNOME_STATIC_CONTENT_PATH`          | yes      | Path to static assets directory                            |
+| `db_dsn`                       | `TELEGNOME_DB_DSN`                       | yes      | PostgreSQL connection string                               |
+| `redis_addr`                   | `TELEGNOME_REDIS_ADDR`                   | yes      | Redis address (e.g. `localhost:6375`)                      |
+| `redis_user`                   | `TELEGNOME_REDIS_USER`                   | yes      | Redis username                                             |
+| `redis_pass`                   | `TELEGNOME_REDIS_PASS`                   | yes      | Redis password                                             |
+| `redis_use_ssl`                | `TELEGNOME_REDIS_USE_SSL`                | no       | `true` connects to Redis over TLS 1.2+ (default: `false`)  |
+| `terms_and_conditions_version` | `TELEGNOME_TERMS_AND_CONDITIONS_VERSION` | no       | Version users must accept (default: `v1.0.0`)              |
+| `debug`                        | `TELEGNOME_DEBUG`                        | no       | `true` for a verbose console logger; JSON logs otherwise   |
 
 The required keys are checked at startup — the bot exits if any of them resolves to an empty value. `webhook_port` and
 `webapp_port` are required but have defaults, so they never fail this check unless explicitly set to an empty value.
@@ -158,14 +167,14 @@ goose -dir ./database/migrations/postgres postgres "<DSN>" down
 
 The `Makefile` wraps everything CI runs, so a failure can be reproduced without pushing:
 
-| Target                  | What it runs                                                          |
-|-------------------------|-----------------------------------------------------------------------|
+| Target                  | What it runs                                                           |
+|-------------------------|------------------------------------------------------------------------|
 | `make verify`           | `go build`, `go vet` (with and without the `integration` tag), `gofmt` |
-| `make test`             | the unit suite, race detector on                                      |
-| `make test-integration` | the database-backed suite                                             |
+| `make test`             | the unit suite, race detector on                                       |
+| `make test-integration` | the database-backed suite                                              |
 | `make lint`             | golangci-lint                                                          |
-| `make lint-fix`         | golangci-lint with `--fix`                                            |
-| `make tools`            | install golangci-lint at the pinned version                           |
+| `make lint-fix`         | golangci-lint with `--fix`                                             |
+| `make tools`            | install golangci-lint at the pinned version                            |
 
 The underlying commands are spelled out below if you would rather run them directly.
 
@@ -222,19 +231,20 @@ make lint
 
 The config uses the **v2 schema**, so a golangci-lint v1 binary will reject it. `make tools` installs the same version
 CI pins (`GOLANGCI_LINT_VERSION` in the `Makefile` must match `version:` in the workflow — Dependabot updates the action
-but not the `Makefile`). `brew install golangci-lint` gives you the latest release instead, which may drift from the pin.
+but not the `Makefile`). `brew install golangci-lint` gives you the latest release instead, which may drift from the
+pin.
 
 ## Docker
 
 ### Build the image
 
 ```shell
-docker build -t my-telegram-bot .
+docker build -t telegnome .
 ```
 
 The multi-stage build produces a minimal image based on `scratch` (~5 MB) containing only the compiled binary, CA
-certificates, locale files, and static assets. The image bakes in `MY_BOT_STATIC_CONTENT_PATH=/app/static` and starts the
-binary with `--locale-path /app/locale`, so only the remaining config keys need to be supplied at runtime.
+certificates, locale files, and static assets. The image bakes in `TELEGNOME_STATIC_CONTENT_PATH=/app/static` and starts
+the binary with `--locale-path /app/locale`, so only the remaining config keys need to be supplied at runtime.
 
 The webhook server binds `webhook_listen_addr` (default `0.0.0.0`), so a published port reaches it from outside the
 container. Set it to `127.0.0.1` only if the sole client is a reverse proxy in the same network namespace — otherwise
@@ -243,7 +253,7 @@ Telegram cannot deliver updates.
 Cross-compilation is wired up via BuildKit's `TARGETOS`/`TARGETARCH`:
 
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t my-telegram-bot .
+docker buildx build --platform linux/amd64,linux/arm64 -t telegnome .
 ```
 
 ## Adding Your Own Handlers
@@ -257,10 +267,14 @@ Command handlers go in group 2 or higher. Use groups -2 and -1 for context-enric
 ## Redis Conversation Storage
 
 `handlers/helpers` provides `NewRedisConversationStorage(config, botUsername)`, a `conversation.Storage` implementation
-backed by Redis (keys expire after 3 days). Nothing constructs it by default — the `redis_*` config keys are validated at
+backed by Redis (keys expire after 3 days). Nothing constructs it by default — the `redis_*` config keys are validated
+at
 startup, but the connection is only opened when you build a gotgbot conversation handler and pass this storage to it.
 
 ## Adding Locales
+
+The pilot ships English (`en`) and Russian (`ru`); every user-facing string must exist in both. To add another
+language:
 
 1. Create `locale/<lang>.yaml` and `locale/<lang>_commands.yaml`.
 2. Add a `static/terms_and_conditions.<lang>.html` page.
@@ -268,8 +282,8 @@ startup, but the connection is only opened when you build a gotgbot conversation
 4. Point `--locale-path` at the folder if it isn't the default `./locale`.
 
 The locale is picked per user from Telegram's `language_code` — `MiscContextHandler` loads the matching texts into
-`ctx.Data["texts"]`, and the WebApp server does the same from the validated initData. A missing locale file falls back to
-`en` (`locale.FallbackLanguage`). The `--locale-path` flag is registered by the `locale` package but parsed by
+`ctx.Data["texts"]`, and the WebApp server does the same from the validated initData. A missing locale file falls back
+to `en` (`locale.FallbackLanguage`). The `--locale-path` flag is registered by the `locale` package but parsed by
 `locale.ParseFlags()`, which `main.go` calls first thing — a binary that owns its own flag handling can skip it and call
 `locale.SetPath` instead, which also drops the parsed-locale caches.
 
@@ -277,19 +291,21 @@ Command descriptions come from `<lang>_commands.yaml`, keyed by the scope they a
 `supportedLanguages` is published on startup, so Telegram serves each user the descriptions matching their
 `language_code`. An empty or absent key is published as an empty list.
 
-| Locale key                | Published to                                                       |
-|---------------------------|--------------------------------------------------------------------|
-| `default`                 | every chat with no more specific scope                             |
-| `all_private_chats`       | all private chats                                                  |
-| `all_group_chats`         | all group chats                                                    |
-| `all_chat_administrators` | administrators of every group chat                                 |
-| `bot_admin`               | the private chat of each user flagged `is_admin` in the database   |
-| `bot_owner`               | the private chat of each user flagged `is_owner` in the database   |
+| Locale key                | Published to                                                     |
+|---------------------------|------------------------------------------------------------------|
+| `default`                 | every chat with no more specific scope                           |
+| `all_private_chats`       | all private chats                                                |
+| `all_group_chats`         | all group chats                                                  |
+| `all_chat_administrators` | administrators of every group chat                               |
+| `bot_admin`               | the private chat of each user flagged `is_admin` in the database |
+| `bot_owner`               | the private chat of each user flagged `is_owner` in the database |
 
 You can also set commands for specific chat members and admins, for details see the
-[commands package](./internals/commands/main.go). 
+[commands package](./internals/commands/main.go).
 
 ## Rate Limiting
+
+The reason for having rate limits: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
 
 The rate limiter middleware wraps the bot client and intercepts all outbound API calls:
 

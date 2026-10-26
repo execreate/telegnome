@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/execreate/go-telegram-bot-template/internals/logger"
+	"github.com/execreate/telegnome/internals/logger"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
@@ -15,18 +15,18 @@ type Configuration struct {
 	*viper.Viper
 }
 
-// Configure loads the configuration from config.yaml and the MY_BOT_* environment
+// Configure loads the configuration from config.yaml and the TELEGNOME_* environment
 // variables, and verifies that every required variable resolves to a non-empty value.
 func Configure(requiredConfigVariables []string) (*Configuration, error) {
 	// configure viper
 	config := &Configuration{viper.New()}
-	config.SetEnvPrefix("my_bot")  // will be upper-cased automatically
-	config.AutomaticEnv()          // automatically read in environment variables that match
-	config.AddConfigPath(".")      // optionally look for config in the working directory
-	config.SetConfigName("config") // name of config file (without extension)
-	config.SetConfigType("yaml")   // REQUIRED if the config file does not have the extension in the name
-	err := config.ReadInConfig()   // Find and read the config file
-	if err != nil {                // Handle errors reading the config file
+	config.SetEnvPrefix("telegnome") // will be upper-cased automatically
+	config.AutomaticEnv()            // automatically read in environment variables that match
+	config.AddConfigPath(".")        // optionally look for config in the working directory
+	config.SetConfigName("config")   // name of config file (without extension)
+	config.SetConfigType("yaml")     // REQUIRED if the config file does not have the extension in the name
+	err := config.ReadInConfig()     // Find and read the config file
+	if err != nil {                  // Handle errors reading the config file
 		logger.Log.Info(
 			"error reading the configuration file fallback to env variables",
 			zap.Error(err),
@@ -131,13 +131,13 @@ func (config *Configuration) GetRedisPassword() string {
 }
 
 // GetRedisUseSSL returns true if the Redis connection should use TLS. Set via the
-// "redis_use_ssl" config key or the MY_BOT_REDIS_USE_SSL environment variable.
+// "redis_use_ssl" config key or the TELEGNOME_REDIS_USE_SSL environment variable.
 func (config *Configuration) GetRedisUseSSL() bool {
 	return config.GetBool("redis_use_ssl")
 }
 
 // GetDebug returns true if the app is running in debug mode. Set via the "debug"
-// config key or the MY_BOT_DEBUG environment variable.
+// config key or the TELEGNOME_DEBUG environment variable.
 func (config *Configuration) GetDebug() bool {
 	return config.GetBool("debug")
 }

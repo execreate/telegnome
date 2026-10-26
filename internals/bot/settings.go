@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/execreate/go-telegram-bot-template/database/tables"
-	"github.com/execreate/go-telegram-bot-template/internals/logger"
+	"github.com/execreate/telegnome/database/tables"
+	"github.com/execreate/telegnome/internals/logger"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"

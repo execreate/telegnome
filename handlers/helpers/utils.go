@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/execreate/go-telegram-bot-template/database/tables"
+	"github.com/execreate/telegnome/database/tables"
 
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
 )

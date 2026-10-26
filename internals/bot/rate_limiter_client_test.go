@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
-	"github.com/execreate/go-telegram-bot-template/internals/limiters"
+	"github.com/execreate/telegnome/internals/limiters"
 	"golang.org/x/time/rate"
 )
 

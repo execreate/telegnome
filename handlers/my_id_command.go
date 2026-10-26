@@ -5,8 +5,8 @@ import (
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
-	"github.com/execreate/go-telegram-bot-template/handlers/helpers"
-	"github.com/execreate/go-telegram-bot-template/internals/logger"
+	"github.com/execreate/telegnome/handlers/helpers"
+	"github.com/execreate/telegnome/internals/logger"
 	"go.uber.org/zap"
 )
 

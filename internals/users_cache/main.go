@@ -11,9 +11,9 @@ import (
 	"errors"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
-	"github.com/execreate/go-telegram-bot-template/database/tables"
-	"github.com/execreate/go-telegram-bot-template/internals/logger"
-	"github.com/execreate/go-telegram-bot-template/internals/users_cache/user_container"
+	"github.com/execreate/telegnome/database/tables"
+	"github.com/execreate/telegnome/internals/logger"
+	"github.com/execreate/telegnome/internals/users_cache/user_container"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"go.uber.org/zap"

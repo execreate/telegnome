@@ -6,7 +6,7 @@ import (
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
-	"github.com/execreate/go-telegram-bot-template/database/tables"
+	"github.com/execreate/telegnome/database/tables"
 )
 
 // contextWithMessage wraps msg in the update shape a private text message arrives in.

@@ -28,6 +28,6 @@ COPY --from=build /go/bin/app /go/bin/app
 COPY --from=build /app/locale/*.yaml /app/locale
 
 COPY --from=build /app/static /app/static
-ENV MY_BOT_STATIC_CONTENT_PATH=/app/static
+ENV TELEGNOME_STATIC_CONTENT_PATH=/app/static
 
 CMD ["/go/bin/app", "--locale-path", "/app/locale"]

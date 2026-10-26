@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
-	"github.com/execreate/go-telegram-bot-template/database/tables"
+	"github.com/execreate/telegnome/database/tables"
 )
 
 type TgUserContainer struct {

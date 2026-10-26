@@ -1,4 +1,4 @@
-module github.com/execreate/go-telegram-bot-template
+module github.com/execreate/telegnome
 
 go 1.26.0
 

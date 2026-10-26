@@ -2,9 +2,9 @@ package bot
 
 import (
 	"github.com/PaulSonOfLars/gotgbot/v2"
-	"github.com/execreate/go-telegram-bot-template/database/tables"
-	"github.com/execreate/go-telegram-bot-template/internals/commands"
-	"github.com/execreate/go-telegram-bot-template/internals/logger"
+	"github.com/execreate/telegnome/database/tables"
+	"github.com/execreate/telegnome/internals/commands"
+	"github.com/execreate/telegnome/internals/logger"
 	"go.uber.org/zap"
 )
 

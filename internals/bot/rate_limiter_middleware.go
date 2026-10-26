@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
-	"github.com/execreate/go-telegram-bot-template/internals/limiters"
-	"github.com/execreate/go-telegram-bot-template/internals/logger"
+	"github.com/execreate/telegnome/internals/limiters"
+	"github.com/execreate/telegnome/internals/logger"
 	"go.uber.org/zap"
 	"golang.org/x/time/rate"
 )

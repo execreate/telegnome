@@ -10,7 +10,7 @@ import (
 
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/conversation"
-	"github.com/execreate/go-telegram-bot-template/internals/logger"
+	"github.com/execreate/telegnome/internals/logger"
 	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 )
